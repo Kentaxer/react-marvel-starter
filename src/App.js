@@ -12,8 +12,8 @@ class App extends Component {
     this.state = {characters: {}};
   }
 
-  renderCharacters(){
-    getCharacters().end(
+  renderCharacters(name = ""){
+    getCharacters(name).end(
       (error, response) => {
         if(!error) {
           this.setState({characters: response.body.data.results}) 
@@ -23,11 +23,14 @@ class App extends Component {
   }
 
   componentDidMount(){
+    console.log("Hello MOUNT");
     this.renderCharacters()
   }
 
   handleSearch = (e) => {
     e.preventDefault();
+    let searchText = e.target.search.value;
+    this.renderCharacters(searchText);
   }
 
   render() {
@@ -35,7 +38,6 @@ class App extends Component {
       <div>
         <Navigation handleSearch={this.handleSearch} />
         <CharacterList characters={this.state.characters} />
-        {JSON.stringify(this.state.characters)}
       </div>
     );
   }
